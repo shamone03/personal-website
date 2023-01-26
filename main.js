@@ -27,7 +27,7 @@ window.addEventListener('resize', () => {
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
 const boxMaterial = new THREE.MeshLambertMaterial({color: BOX_COLOR});
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-// boxMesh.rotation.set(45, 0, 45);
+boxMesh.rotation.set(45, 0, 45);
 scene.add(boxMesh);
 
 const controls = new TrackballControls(camera, renderer.domElement);
@@ -35,8 +35,8 @@ controls.rotateSpeed = 4;
 
 const rendering = () => {
 	requestAnimationFrame(rendering);
-	// boxMesh.rotation.z -= 0.001;
-	// boxMesh.rotation.x -= 0.001;
+	boxMesh.rotation.z -= 0.01;
+	boxMesh.rotation.x -= 0.01;
 	controls.update();
 	renderer.render(scene, camera);
 }
