@@ -1,7 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#name-box {
+	margin: -50px 0 0 -50px;
+}
+
+
 body {
-  margin: 0px;
-  height: 100vh;
- }
- canvas {
-  display: block;
- }
+	margin: 0px;
+	height: 100%;
+}
+canvas {
+	display: block;
+}
