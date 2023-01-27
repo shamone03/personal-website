@@ -19,24 +19,26 @@ document.body.appendChild(renderer.domElement);
 window.addEventListener('resize', () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateMatrix();
+	camera.updateProjectionMatrix();
 	console.log("hello");
 })
 
 
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
 const boxMaterial = new THREE.MeshLambertMaterial({color: BOX_COLOR});
+
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
 boxMesh.rotation.set(45, 0, 45);
 scene.add(boxMesh);
 
 const controls = new TrackballControls(camera, renderer.domElement);
+controls.dynamicDampingFactor = 0.0001;
 controls.rotateSpeed = 4;
 
 const rendering = () => {
 	requestAnimationFrame(rendering);
-	boxMesh.rotation.z -= 0.01;
-	boxMesh.rotation.x -= 0.01;
+	// boxMesh.rotation.z -= 0.01;
+	// boxMesh.rotation.x -= 0.01;
 	controls.update();
 	renderer.render(scene, camera);
 }
@@ -44,7 +46,7 @@ const rendering = () => {
 const lightData = [
 	{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: 3, z: 3}},
 	{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: -3, z: 3}},
-	{color: 0xFFFFFF, intensity: 0/5, dist: 100, position: {x: 3, y: -3, z: -3}},
+	{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: -3, z: -3}},
 	{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: 3, z: -3}},
 // 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: 3, y: 3, z: 3}},
 // 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: -3, y: -3, z: 3}},
@@ -56,6 +58,9 @@ for (let i = 0; i < lightData.length; i++) {
 	const light = new THREE.PointLight(lightData[i].color, lightData[i].intensity, lightData[i].dist);
 	light.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
 	const lightHelper = new THREE.PointLightHelper(light, 1, LIGHT_COLOR);
+	const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1), new THREE.MeshLambertMaterial({color: LIGHT_COLOR}));
+	sphere.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
+	// scene.add(sphere);
 	// scene.add(lightHelper);
 	scene.add(light);
 }

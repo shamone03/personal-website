@@ -6,15 +6,6 @@
 	margin: -30px 0 0 -91.22px;
 }
 
-a {
-	color: aliceblue;
-	transition: all ease-in-out;
-}
-
-a:hover {
-	transition: all ease-in-out;
-	color:black;
-}
 
 body {
 	margin: 0px;
