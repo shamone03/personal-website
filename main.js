@@ -87,8 +87,8 @@ const rendering = () => {
 		}
 		// console.log(intersects[i].object);
 	}
-	// boxMesh.rotation.z -= 0.01;
-	// boxMesh.rotation.x -= 0.01;
+	boxMesh.rotation.z -= 0.01;
+	boxMesh.rotation.x -= 0.01;
 	controls.update();
 	renderer.render(scene, camera);
 	stats.end();
