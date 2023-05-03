@@ -23,47 +23,64 @@ window.addEventListener('resize', () => {
 	console.log("hello");
 })
 
-
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
 const boxMaterial = new THREE.MeshLambertMaterial({color: BOX_COLOR});
-
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
 boxMesh.rotation.set(45, 0, 45);
 scene.add(boxMesh);
 
 const controls = new TrackballControls(camera, renderer.domElement);
-controls.dynamicDampingFactor = 0.0001;
+controls.dynamicDampingFactor = 0.1;
 controls.rotateSpeed = 4;
+controls.noZoom = true;
 
+
+const lighting = () => {
+	const lightData = [
+		{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: 3, z: 3}},
+		{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: -3, z: 3}},
+		{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: -3, z: -3}},
+		{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: 3, z: -3}},
+	]
+
+	for (let i = 0; i < lightData.length; i++) {
+		const light = new THREE.PointLight(lightData[i].color, lightData[i].intensity, lightData[i].dist);
+		light.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
+		const lightHelper = new THREE.PointLightHelper(light, 1, LIGHT_COLOR);
+		const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1), new THREE.MeshLambertMaterial({color: LIGHT_COLOR}));
+		sphere.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
+		// scene.add(sphere);
+		// scene.add(lightHelper);
+		scene.add(light);
+	}
+}
+const pointer = new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
+window.addEventListener('pointermove', (e) => {
+	pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+	pointer.y = (e.clientY / window.innerHeight) * 2 + 1;
+	// console.log("pointer move");
+
+})
 const rendering = () => {
 	requestAnimationFrame(rendering);
-	// boxMesh.rotation.z -= 0.01;
-	// boxMesh.rotation.x -= 0.01;
+	// console.log(boxMesh);
+
+	raycaster.setFromCamera(pointer, camera);
+	const intersects = raycaster.intersectObjects(scene.children);
+	// if (intersects.length > 0) {
+	// 	console.log("intersect");
+	// }
+	for (let i = 0; i < intersects.length; i++) {
+		intersects[i].object.material.color.set("#FFFFFF");
+		console.log("intersect");
+		// console.log(intersects[i].object);
+	}
+	boxMesh.rotation.z -= 0.01;
+	boxMesh.rotation.x -= 0.01;
 	controls.update();
 	renderer.render(scene, camera);
 }
 
-const lightData = [
-	{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: 3, z: 3}},
-	{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: -3, z: 3}},
-	{color: 0xFFFFFF, intensity: 0.5, dist: 100, position: {x: 3, y: -3, z: -3}},
-	{color: 0xFFFFFF, intensity: 1, dist: 100, position: {x: -3, y: 3, z: -3}},
-// 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: 3, y: 3, z: 3}},
-// 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: -3, y: -3, z: 3}},
-// 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: -3, y: 3, z: 3}},
-// 	{color: LIGHT_COLOR, intensity: 1, dist: 100, position: {x: 3, y: -3, z: 3}},
-]
-
-for (let i = 0; i < lightData.length; i++) {
-	const light = new THREE.PointLight(lightData[i].color, lightData[i].intensity, lightData[i].dist);
-	light.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
-	const lightHelper = new THREE.PointLightHelper(light, 1, LIGHT_COLOR);
-	const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1), new THREE.MeshLambertMaterial({color: LIGHT_COLOR}));
-	sphere.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
-	// scene.add(sphere);
-	// scene.add(lightHelper);
-	scene.add(light);
-}
-
-
+lighting();
 rendering();
