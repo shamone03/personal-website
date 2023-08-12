@@ -4,7 +4,9 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Stats from 'stats.js';
 const SCENE_COLOR = "#F3EFE0";
 const LIGHT_COLOR = "#FFFFFF";
-
+const PROD_BASE = "https://aryah.dev/models/"
+const DEV_BASE = "../dist/assets/models/"
+console.log(import.meta.url);
 const scene = new THREE.Scene();
 const stats = new Stats();
 const loader = new GLTFLoader();
@@ -67,7 +69,7 @@ window.addEventListener('pointermove', (e) => {
 
 });
 
-loader.load(`../models/tree${Math.ceil((Math.random() * 6) / 2)}.gltf`, (gltf) => {
+loader.load(`${PROD_BASE}/tree${Math.ceil((Math.random() * 6) / 2)}.gltf`, (gltf) => {
 	scene.add(gltf.scene);
 });
 
