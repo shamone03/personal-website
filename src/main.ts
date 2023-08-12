@@ -27,7 +27,7 @@ window.addEventListener('resize', () => {
 })
 
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2).toNonIndexed();
-const boxMaterial = new THREE.MeshLambertMaterial({ color: BOX_COLOR, wireframe: false });
+const boxMaterial = new THREE.MeshNormalMaterial();
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
 boxMesh.rotation.set(45, 0, 45);
 boxMesh.name = "mainBox";
@@ -63,52 +63,17 @@ const raycaster = new THREE.Raycaster();
 window.addEventListener('pointermove', (e) => {
 	pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
 	pointer.y = - (e.clientY / window.innerHeight) * 2 + 1;
-	// console.log("pointer move");
 
 });
 
-// const setVertexColors = (vertices, faceID) => {
-// 	let colors = vertices;
-// 	for (let i = faceID * 6; i < 6; i++) {
-// 		colors[i] = new THREE.Color(0, 0, 0);
-// 	}
-// }
 
 const rendering = () => {
 	stats.begin();
 	requestAnimationFrame(rendering);
-	// console.log(boxMesh);
 
 	raycaster.setFromCamera(pointer, camera);
 	const intersects = raycaster.intersectObjects(scene.children, false);
-	// if (intersects.length > 1) {
-	//
-	// 	console.log("intersect");
-	// }
-	if (intersects.length === 0) {
-		boxMesh.material.color.set(BOX_COLOR);
-	}
 
-	// 0,1  2,3  4,5  6,7  8,9 10,11
-	//  0    1    2    3    4    5
-	// a,b,c a,b,c a,b,c a,b,c a,b,c a,b,c
-	//   0     1     2     3     4     5
-	for (let i = 0; i < intersects.length; i++) {
-		if (intersects[i].object.name === "mainBox") {
-			// intersects[i].object.material.color.set("#FFFFFF");
-			// console.log(intersects[i].faceIndex); // index of triangle
-			const triangleIndex = intersects[i].faceIndex as number;
-			const faceID = triangleIndex % 2 === 0 ? triangleIndex / 2 : (triangleIndex - 1) / 2;
-			const face = intersects[i].face;
-			console.log(faceID * 2, faceID * 2 + 1);
-
-			// console.log(intersects[i].object.geometry.getAttribute('position'));
-
-		}
-		// console.log(intersects[i].object);
-	}
-	// boxMesh.rotation.z -= 0.01;
-	// boxMesh.rotation.x -= 0.01;
 	controls.update();
 	renderer.render(scene, camera);
 	stats.end();
