@@ -81,6 +81,9 @@ const rendering = () => {
 	const intersects = raycaster.intersectObjects(scene.children, false);
 
 	controls.update();
+	// scene.rotation.x -= 0.01;
+	// scene.rotation.z -= 0.01;
+	scene.rotation.y -= 0.001;
 	renderer.render(scene, camera);
 	stats.end();
 }
