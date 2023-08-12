@@ -28,6 +28,7 @@ window.addEventListener('resize', () => {
 
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2).toNonIndexed();
 const boxMaterial = new THREE.MeshLambertMaterial({ color: "lightgreen", wireframe: false });
+const normMaterial = new THREE.MeshNormalMaterial();
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
 boxMesh.rotation.set(0, 0, 0);
 boxMesh.name = "mainBox";
