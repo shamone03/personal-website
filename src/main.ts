@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Stats from 'stats.js';
-const SCENE_COLOR = "#F3EFE0";
+const SCENE_COLOR = "#272727";
 const LIGHT_COLOR = "#FFFFFF";
 const PROD_BASE = "https://aryah.dev/models/"
 const DEV_BASE = "./models/"
