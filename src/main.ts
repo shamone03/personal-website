@@ -107,7 +107,7 @@ function drawLine(start: THREE.Vector3, end: THREE.Vector3) {
 // raycaster.set(boid.position, direction.subVectors(left, boid.position).normalize());
 const avgPos = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
 scene.add(avgPos);
-const numBoids = 50;
+const numBoids = 300;
 const flock: Boid[] = [];
 let delta = 0;
 for (let i = 0; i < numBoids; i++) {
