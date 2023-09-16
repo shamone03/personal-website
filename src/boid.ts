@@ -4,6 +4,7 @@ import { Material } from "three";
 export default class Boid {
     position: THREE.Vector3;
     velocity: THREE.Vector3;
+    acceleration: THREE.Vector3;
     arrow: THREE.ArrowHelper;
     scene: THREE.Scene;
     boidMesh: THREE.Mesh;
@@ -11,9 +12,10 @@ export default class Boid {
     speed: number;
 
     constructor(scene: THREE.Scene) {
-        this.speed = 1;
+        this.speed = 3;
         this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(100);
-        this.velocity = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(this.speed * 25);
+        this.velocity = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(this.speed);
+        this.acceleration = new THREE.Vector3();
         this.perception = 10;
         this.arrow = new THREE.ArrowHelper;
         this.arrow.setLength(3);
@@ -45,28 +47,85 @@ export default class Boid {
     alignment(flock: Boid[]): THREE.Vector3 {
         
         const align = new THREE.Vector3(0, 0, 0);
+        let steering = new THREE.Vector3();
+        let count = 0;
+        for (let boid of flock) {
+            const distance = this.position.distanceTo(boid.position);
+
+            if (this !== boid && distance < this.perception) {
+                steering.add(boid.velocity);
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            steering.divideScalar(count);
+            steering.sub(this.velocity)
+            steering.setLength(this.speed);
+        }
+        align.copy(steering);
+
+        return align;
+    }
+
+    cohesion(flock: Boid[]) {
+        const cohesion = new THREE.Vector3(0, 0, 0);
+        let steering = new THREE.Vector3();
+        let count = 0;
+        for (let boid of flock) {
+            const distance = this.position.distanceTo(boid.position);
+
+            if (this !== boid && distance < this.perception) {
+                steering.add(boid.position);
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            steering.divideScalar(count);
+            steering.sub(this.position);
+            steering.setLength(this.speed);
+        }
+        cohesion.copy(steering);
+
+        return cohesion;
+    }
+
+    separation(flock: Boid[]) {
+        const separation = new THREE.Vector3(0, 0, 0);
         let avg = new THREE.Vector3();
         let count = 0;
         for (let boid of flock) {
             const distance = this.position.distanceTo(boid.position);
 
             if (this !== boid && distance < this.perception) {
-                avg.add(boid.velocity);
+                const direction = new THREE.Vector3().subVectors(this.position, boid.position);
+                direction.divideScalar(distance);
+                avg.add(direction);
                 count++;
             }
         }
 
         if (count > 0) {
             avg.divideScalar(count);
-            align.copy(avg.sub(this.velocity)).setLength(this.speed);
+            avg.setLength(this.speed);
+            // avg.sub(this.velocity);
+            separation.copy(avg);
         }
-        align.clampLength(0.1, this.speed);
+        separation.clampLength(0.1, this.speed);
 
-        return align;
+        return separation;
     }
 
     update(delta: number, flock: Boid[]) {
-        this.velocity.add(this.alignment(flock));
+        this.acceleration.add(this.alignment(flock));
+        this.acceleration.add(this.cohesion(flock));
+        this.acceleration.add(this.separation(flock));
+        this.velocity.add(this.acceleration);
+        this.velocity.clampLength(0, this.speed * 25);
+        this.acceleration.multiplyScalar(0);
+
+        console.log(this.velocity.length());
         this.bounds();
         this.applyVelocity(delta);
     }
