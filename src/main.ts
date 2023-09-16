@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 const stats = new Stats();
 const loader = new GLTFLoader();
 stats.showPanel(0);
-document.body.appendChild(stats.dom);
+// document.body.appendChild(stats.dom);
 const axesHelper = new THREE.AxesHelper(100);
 // scene.add(axesHelper)
 const raycaster = new THREE.Raycaster();
@@ -40,16 +40,20 @@ controls.rotateSpeed = 4;
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
 const boxMaterial = new THREE.MeshLambertMaterial({ color: "lightgreen" });
 const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-boxMesh.position.x -= 2;
-boxMesh.name = "mainBox";
-// scene.add(boxMesh);
 
+boxMesh.name = "mainBox";
+boxMesh.scale.multiplyScalar(10);
+scene.add(boxMesh);
+loader.load(`/models/tree${Math.ceil((Math.random() * 6) / 2)}.gltf`, (gltf) => {
+	gltf.scene.scale.multiplyScalar(10);
+	scene.add(gltf.scene);
+});
 const lighting = () => {
 	const lightData = [
-		{ color: 0xFFFFFF, intensity: 0.5, dist: 100, position: { x: 10, y: 10, z: 10 } },
-		{ color: 0xFFFFFF, intensity: 1, dist: 100, position: { x: -10, y: -10, z: 10 } },
-		{ color: 0xFFFFFF, intensity: 0.5, dist: 100, position: { x: 10, y: -10, z: -10 } },
-		{ color: 0xFFFFFF, intensity: 1, dist: 100, position: { x: -10, y: 10, z: -10 } },
+		{ color: 0xFFFFFF, intensity: 0.5, dist: 300, position: { x: 60, y: 60, z: 60 } },
+		{ color: 0xFFFFFF, intensity: 1, dist: 300, position: { x: -60, y: -60, z: 60 } },
+		{ color: 0xFFFFFF, intensity: 0.5, dist: 300, position: { x: 60, y: -60, z: -60 } },
+		{ color: 0xFFFFFF, intensity: 1, dist: 300, position: { x: -60, y: 60, z: -60 } },
 	]
 
 	for (let i = 0; i < lightData.length; i++) {
@@ -59,7 +63,7 @@ const lighting = () => {
 		const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1), new THREE.MeshLambertMaterial({ color: LIGHT_COLOR }));
 		sphere.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
 		// scene.add(sphere);
-		// scene.add(lightHelper);
+		scene.add(lightHelper);
 		scene.add(light);
 	}
 }
@@ -106,7 +110,7 @@ function drawLine(start: THREE.Vector3, end: THREE.Vector3) {
 // scene.add(new THREE.ArrowHelper(direction.subVectors(left, boid.position).normalize(), boid.position, 2));
 // raycaster.set(boid.position, direction.subVectors(left, boid.position).normalize());
 const avgPos = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
-scene.add(avgPos);
+// scene.add(avgPos);
 const numBoids = 300;
 const flock: Boid[] = [];
 let delta = 0;
