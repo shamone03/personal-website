@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Stats from 'stats.js';
 import Boid from "./boid";
 import { color } from "three/examples/jsm/nodes/Nodes.js";
+import FlockManager from "./flock";
 
 const SCENE_COLOR = "#272727";
 const LIGHT_COLOR = "#FFFFFF";
@@ -112,26 +113,33 @@ function drawLine(start: THREE.Vector3, end: THREE.Vector3) {
 const avgPos = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
 // scene.add(avgPos);
 const numBoids = 150;
-const flock: Boid[] = [];
+// const flock: Boid[] = [];
 let delta = 0;
-for (let i = 0; i < numBoids; i++) {
-	const b = new Boid(scene);
-	flock.push(b);
-	b.spawn();
-}
+// for (let i = 0; i < numBoids; i++) {
+// 	const b = new Boid(scene);
+// 	flock.push(b);
+// 	b.spawn();
+// }
+const cohesionInput = document.getElementById("cohesion") as HTMLInputElement;
+const alignmentInput = document.getElementById("alignment") as HTMLInputElement;
+const separationInput = document.getElementById("separation") as HTMLInputElement;
+const speedInput = document.getElementById("speed") as HTMLInputElement;
+const perceptionInput = document.getElementById("perception") as HTMLInputElement;
 
+
+const flockManager = new FlockManager(scene, 150, 7.5, {cohesion: 1, alignment: 1, separation: 1})
+// cohesionInput.addEventListener('input', () => flockManager.updateCohesion(parseFloat(cohesionInput.value) / 100));
+// alignmentInput.addEventListener('input', () => flockManager.updateAlignment(parseFloat(alignmentInput.value) / 100));
+// separationInput.addEventListener('input', () => flockManager.updateSeparation(parseFloat(separationInput.value) / 100));
+// speedInput.addEventListener('input', () => flockManager.updateSpeed(parseFloat(speedInput.value)));
+// perceptionInput.addEventListener('input', () => flockManager.updatePerception(parseFloat(perceptionInput.value)));
 // stats.showPanel(1);
 const rendering = () => {
 	stats.update();
 	requestAnimationFrame(rendering);
 	delta = clock.getDelta();
-	for (let boid of flock) {
-		
-		boid.update(delta, flock);
-		boid.show();
+	flockManager.simulate(delta);
 
-	}
-	// avgPos.position.copy(flock[0].velocity);
 	controls.update();
 	renderer.render(scene, camera);
 

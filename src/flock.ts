@@ -1,16 +1,15 @@
 import Boid from "./boid";
+import { Multipliers } from "./types";
 
-class FlockManager {
+export default class FlockManager {
     boids: Boid[]
     perception: number;
-    separation: number;
-    alignment: number;
-    cohesion: number;
-    constructor(scene: THREE.Scene, numBoids: number, perception: number, separation: number, alignment: number, cohesion: number) {
+    multipliers: Multipliers;
+
+
+    constructor(scene: THREE.Scene, numBoids: number, perception: number, multipliers: Multipliers) {
         this.perception = perception;
-        this.alignment = alignment;
-        this.cohesion = cohesion;
-        this.separation = separation;
+        this.multipliers = multipliers;
         this.boids = [];
         for (let i = 0; i < numBoids; i++) {
             const b = new Boid(scene);
@@ -23,6 +22,36 @@ class FlockManager {
         for (let boid of this.boids) {
             boid.update(delta, this.boids);
             boid.show();
+        }
+    }
+
+    public updateCohesion(cohesion: number) {
+        for (let boid of this.boids) {
+            boid.multipliers = { ...boid.multipliers, cohesion: cohesion }
+        }
+    }
+    
+    public updateAlignment(alignment: number) {
+        for (let boid of this.boids) {
+            boid.multipliers = { ...boid.multipliers, alignment: alignment }
+        }
+    }
+    
+    public updateSeparation(separation: number) {
+        for (let boid of this.boids) {
+            boid.multipliers = { ...boid.multipliers, separation: separation }
+        }
+    }
+
+    public updateSpeed(speed: number) {
+        for (let boid of this.boids) {
+            boid.speed = speed;
+        }
+    }
+
+    public updatePerception(perception: number) {
+        for (let boid of this.boids) {
+            boid.perception = perception;
         }
     }
 }

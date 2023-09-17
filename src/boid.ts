@@ -1,22 +1,41 @@
 import * as THREE from "three";
 import { Material } from "three";
+import { Multipliers } from "./types";
 
 export default class Boid {
     position: THREE.Vector3;
     velocity: THREE.Vector3;
     acceleration: THREE.Vector3;
+
+    private _multipliers: Multipliers;
+    public get multipliers(): Multipliers {
+        return this._multipliers;
+    }
+    public set multipliers(value: Multipliers) {
+        this._multipliers = value;
+    }
+
     arrow: THREE.ArrowHelper;
     scene: THREE.Scene;
     boidMesh: THREE.Mesh;
     perception: number;
-    speed: number;
 
-    constructor(scene: THREE.Scene) {
-        this.speed = 4;
+    private _speed: number;
+    public get speed(): number {
+        return this._speed;
+    }
+    public set speed(value: number) {
+        this._speed = value;
+    }
+
+    constructor(scene: THREE.Scene, speed: number = 4, perception: number = 7.5, multipliers: Multipliers = { cohesion: 1, alignment: 1, separation: 1 }) {
+        this._speed = speed;
+        this._multipliers = multipliers;
+
         this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(75);
         this.velocity = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(this.speed * 25);
         this.acceleration = new THREE.Vector3();
-        this.perception = 7.5;
+        this.perception = perception;
         this.arrow = new THREE.ArrowHelper;
         this.arrow.setLength(3);
         // this.deltaVel = new THREE.Vector3();
@@ -24,7 +43,7 @@ export default class Boid {
         this.scene = scene;
         const normMaterial = new THREE.MeshNormalMaterial();
         this.boidMesh = new THREE.Mesh(new THREE.SphereGeometry, normMaterial);
-        this.boidMesh.add(this.arrow);
+        // this.boidMesh.add(this.arrow);
     }
 
     spawn() {
@@ -52,7 +71,7 @@ export default class Boid {
         for (let boid of flock) {
             const distance = this.position.distanceTo(boid.position);
 
-            if (this !== boid && distance < this.perception) {
+            if (this != boid && distance < this.perception) {
                 steering.add(boid.velocity);
                 count++;
             }
@@ -75,7 +94,7 @@ export default class Boid {
         for (let boid of flock) {
             const distance = this.position.distanceTo(boid.position);
 
-            if (this !== boid && distance < this.perception) {
+            if (this != boid && distance < this.perception) {
                 steering.add(boid.position);
                 count++;
             }
@@ -98,7 +117,7 @@ export default class Boid {
         for (let boid of flock) {
             const distance = this.position.distanceTo(boid.position);
 
-            if (this !== boid && distance < this.perception) {
+            if (this != boid && distance < this.perception) {
                 const direction = new THREE.Vector3().subVectors(this.position, boid.position);
                 direction.divideScalar(distance * distance);
                 avg.add(direction);
@@ -109,23 +128,25 @@ export default class Boid {
         if (count > 0) {
             avg.divideScalar(count);
             avg.setLength(this.speed);
-            // avg.sub(this.velocity);
+            // avg.sub(this.position);
             separation.copy(avg);
         }
-        separation.clampLength(0.1, this.speed);
+        // separation.clampLength(0.1, this.speed);
 
         return separation;
     }
 
     update(delta: number, flock: Boid[]) {
-        this.acceleration.add(this.alignment(flock));
-        this.acceleration.add(this.cohesion(flock));
-        this.acceleration.add(this.separation(flock));
+
+        this.acceleration.add(this.cohesion(flock).multiplyScalar(this.multipliers.cohesion));
+        this.acceleration.add(this.alignment(flock).multiplyScalar(this.multipliers.alignment));
+        this.acceleration.add(this.separation(flock).multiplyScalar(this.multipliers.separation));
+
         this.velocity.add(this.acceleration);
         this.velocity.clampLength(0, this.speed * 25);
         this.acceleration.multiplyScalar(0);
 
-        console.log(this.velocity.length());
+        // console.log(this.velocity.length());
         this.bounds();
         this.applyVelocity(delta);
     }
