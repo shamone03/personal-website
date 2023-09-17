@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 const stats = new Stats();
 const loader = new GLTFLoader();
 stats.showPanel(0);
-document.body.appendChild(stats.dom);
+// document.body.appendChild(stats.dom);
 const axesHelper = new THREE.AxesHelper(100);
 // scene.add(axesHelper)
 const raycaster = new THREE.Raycaster();
