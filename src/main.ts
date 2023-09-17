@@ -63,7 +63,7 @@ const lighting = () => {
 		const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1), new THREE.MeshLambertMaterial({ color: LIGHT_COLOR }));
 		sphere.position.set(lightData[i].position.x, lightData[i].position.y, lightData[i].position.z);
 		// scene.add(sphere);
-		scene.add(lightHelper);
+		// scene.add(lightHelper);
 		scene.add(light);
 	}
 }
@@ -122,7 +122,7 @@ for (let i = 0; i < numBoids; i++) {
 
 const velocity = new THREE.Vector3().randomDirection();
 // stats.showPanel(1);
-const rendering = () => {	
+const rendering = () => {
 	stats.update();
 	requestAnimationFrame(rendering);
 	delta = clock.getDelta();
