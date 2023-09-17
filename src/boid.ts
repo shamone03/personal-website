@@ -13,10 +13,10 @@ export default class Boid {
 
     constructor(scene: THREE.Scene) {
         this.speed = 4;
-        this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(150);
+        this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(75);
         this.velocity = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(this.speed * 25);
         this.acceleration = new THREE.Vector3();
-        this.perception = 15;
+        this.perception = 7.5;
         this.arrow = new THREE.ArrowHelper;
         this.arrow.setLength(3);
         // this.deltaVel = new THREE.Vector3();
@@ -131,7 +131,7 @@ export default class Boid {
     }
     
     bounds() {
-        const max = 150;
+        const max = 75;
         if (this.position.x > max) this.position.x = -max + 1;
         if (this.position.x < -max) this.position.x = max - 1;
         if (this.position.y > max) this.position.y = -max + 1;

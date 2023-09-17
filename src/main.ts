@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 const stats = new Stats();
 const loader = new GLTFLoader();
 stats.showPanel(0);
-// document.body.appendChild(stats.dom);
+document.body.appendChild(stats.dom);
 const axesHelper = new THREE.AxesHelper(100);
 // scene.add(axesHelper)
 const raycaster = new THREE.Raycaster();
@@ -111,7 +111,7 @@ function drawLine(start: THREE.Vector3, end: THREE.Vector3) {
 // raycaster.set(boid.position, direction.subVectors(left, boid.position).normalize());
 const avgPos = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
 // scene.add(avgPos);
-const numBoids = 300;
+const numBoids = 150;
 const flock: Boid[] = [];
 let delta = 0;
 for (let i = 0; i < numBoids; i++) {
@@ -120,7 +120,6 @@ for (let i = 0; i < numBoids; i++) {
 	b.spawn();
 }
 
-const velocity = new THREE.Vector3().randomDirection();
 // stats.showPanel(1);
 const rendering = () => {
 	stats.update();
