@@ -28,11 +28,11 @@ export default class Boid {
         this._speed = value;
     }
 
-    constructor(scene: THREE.Scene, speed: number = 4, perception: number = 7.5, multipliers: Multipliers = { cohesion: 1, alignment: 1, separation: 1 }) {
+    constructor(scene: THREE.Scene, speed: number = 4, perception: number = 10, multipliers: Multipliers = { cohesion: 1, alignment: 1, separation: 1 }) {
         this._speed = speed;
         this._multipliers = multipliers;
 
-        this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(75);
+        this.position = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(100);
         this.velocity = new THREE.Vector3().random().subScalar(0.5).multiplyScalar(this.speed * 25);
         this.acceleration = new THREE.Vector3();
         this.perception = perception;
@@ -152,7 +152,7 @@ export default class Boid {
     }
     
     bounds() {
-        const max = 75;
+        const max = 100;
         if (this.position.x > max) this.position.x = -max + 1;
         if (this.position.x < -max) this.position.x = max - 1;
         if (this.position.y > max) this.position.y = -max + 1;
