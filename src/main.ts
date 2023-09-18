@@ -127,7 +127,7 @@ const speedInput = document.getElementById("speed") as HTMLInputElement;
 const perceptionInput = document.getElementById("perception") as HTMLInputElement;
 
 
-const flockManager = new FlockManager(scene, 150, 7.5, {cohesion: 1, alignment: 1, separation: 1})
+const flockManager = new FlockManager(scene, 350, 7.5, {cohesion: 1, alignment: 1, separation: 1})
 // cohesionInput.addEventListener('input', () => flockManager.updateCohesion(parseFloat(cohesionInput.value) / 100));
 // alignmentInput.addEventListener('input', () => flockManager.updateAlignment(parseFloat(alignmentInput.value) / 100));
 // separationInput.addEventListener('input', () => flockManager.updateSeparation(parseFloat(separationInput.value) / 100));
