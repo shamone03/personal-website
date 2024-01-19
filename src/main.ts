@@ -135,7 +135,7 @@ alignmentInput.addEventListener('input', () => flockManager.updateAlignment(pars
 separationInput.addEventListener('input', () => flockManager.updateSeparation(parseFloat(separationInput.value) / 100));
 speedInput.addEventListener('input', () => flockManager.updateSpeed(parseFloat(speedInput.value)));
 perceptionInput.addEventListener('input', () => flockManager.updatePerception(parseFloat(perceptionInput.value)));
-settingsButton.addEventListener('click', () => inputs.classList.toggle("hide"));
+settingsButton.addEventListener('click', () => inputs.classList.toggle("hidden"));
 // stats.showPanel(1);
 const rendering = () => {
 	stats.update();
