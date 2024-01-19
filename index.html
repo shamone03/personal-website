@@ -10,27 +10,31 @@
 <body class="relative">
 	<div class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit text-center" id="name-box">
 		<h1 class="text-3xl text-center font-bold text-white">Aryah</h1>
-		<div class="flex flex-row space-x-4">
-			<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://github.com/shamone03">GitHub</a>
-			<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://www.linkedin.com/in/aryahkannan/">LinkedIn</a>
-			<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="mailto:aryah@dal.ca">Email</a>
-			<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://raw.githubusercontent.com/shamone03/resume/main/resume.pdf">Resume</a>
+		<div class="flex flex-col space-y-1">
+			<div class="flex flex-row space-x-4">
+				<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://github.com/shamone03">GitHub</a>
+				<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://www.linkedin.com/in/aryahkannan/">LinkedIn</a>
+				<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="mailto:aryah@dal.ca">Email</a>
+				<a class="inline hover:text-black hover:transition-all hover:ease-in-out text-white" href="https://raw.githubusercontent.com/shamone03/resume/main/resume.pdf">Resume</a>
+			</div>
+			<button id="settings" class="inline hover:transition-colors hover:ease-in-out text-white border">Settings</button>
 		</div>
 	</div>
-	<!-- <div class="absolute">
+	<div class="absolute" id="inputs">
 		<label for="cohesion" class="text-white ml-3">Cohesion</label>
-		<input name="cohesion" class="block mb-2 ml-3" type="range" min="0" max="100" value="100" class="slider" id="cohesion">
+		<input name="cohesion" class="block mb-2 ml-3" type="range" min="0" max="200" value="100" class="slider" id="cohesion">
 		<label for="alignment" class="text-white ml-3">Alignment</label>
-		<input name="alignment" class="block mb-2 ml-3" type="range" min="0" max="100" value="100" class="slider" id="alignment">
+		<input name="alignment" class="block mb-2 ml-3" type="range" min="0" max="200" value="100" class="slider" id="alignment">
 		<label for="separation" class="text-white ml-3">Separation</label>
-		<input name="separation" class="block mb-2 ml-3" type="range" min="0" max="100" value="100" class="slider" id="separation">
+		<input name="separation" class="block mb-2 ml-3" type="range" min="0" max="200" value="100" class="slider" id="separation">
 
 		<label for="speed" class="text-white ml-3">Speed</label>
-		<input name="speed" class="block mb-2 ml-3" type="range" min="0" max="10" value="4" class="slider" id="speed">
+		<input name="speed" class="block mb-2 ml-3" type="range" min="0" max="20" value="4" class="slider" id="speed">
 
 		<label for="perception" class="text-white ml-3">Perception</label>
-		<input name="perception" class="block mb-2 ml-3" type="range" min="0" max="20" value="7.5" class="slider" id="perception">
-	</div> -->
+		<input name="perception" class="block mb-2 ml-3" type="range" min="0" max="40" value="7.5" class="slider" id="perception">
+
+	</div>
 	<script type="module" src="/src/main.ts"></script>
 </body>
 </html>

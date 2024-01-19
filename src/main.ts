@@ -36,7 +36,7 @@ window.addEventListener('resize', () => {
 const controls = new TrackballControls(camera, renderer.domElement);
 controls.dynamicDampingFactor = 0.1;
 controls.rotateSpeed = 4;
-// controls.noZoom = true;
+controls.noZoom = true;
 
 const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
 const boxMaterial = new THREE.MeshLambertMaterial({ color: "lightgreen" });
@@ -120,19 +120,22 @@ let delta = 0;
 // 	flock.push(b);
 // 	b.spawn();
 // }
+const inputs = document.getElementById("inputs") as HTMLDivElement;
 const cohesionInput = document.getElementById("cohesion") as HTMLInputElement;
 const alignmentInput = document.getElementById("alignment") as HTMLInputElement;
 const separationInput = document.getElementById("separation") as HTMLInputElement;
 const speedInput = document.getElementById("speed") as HTMLInputElement;
 const perceptionInput = document.getElementById("perception") as HTMLInputElement;
+const settingsButton = document.getElementById("settings") as HTMLButtonElement;
 
 
-const flockManager = new FlockManager(scene, 350, 7.5, {cohesion: 1, alignment: 1, separation: 1})
-// cohesionInput.addEventListener('input', () => flockManager.updateCohesion(parseFloat(cohesionInput.value) / 100));
-// alignmentInput.addEventListener('input', () => flockManager.updateAlignment(parseFloat(alignmentInput.value) / 100));
-// separationInput.addEventListener('input', () => flockManager.updateSeparation(parseFloat(separationInput.value) / 100));
-// speedInput.addEventListener('input', () => flockManager.updateSpeed(parseFloat(speedInput.value)));
-// perceptionInput.addEventListener('input', () => flockManager.updatePerception(parseFloat(perceptionInput.value)));
+const flockManager = new FlockManager(scene, 500, 7.5, {cohesion: 1, alignment: 1, separation: 1})
+cohesionInput.addEventListener('input', () => flockManager.updateCohesion(parseFloat(cohesionInput.value) / 100));
+alignmentInput.addEventListener('input', () => flockManager.updateAlignment(parseFloat(alignmentInput.value) / 100));
+separationInput.addEventListener('input', () => flockManager.updateSeparation(parseFloat(separationInput.value) / 100));
+speedInput.addEventListener('input', () => flockManager.updateSpeed(parseFloat(speedInput.value)));
+perceptionInput.addEventListener('input', () => flockManager.updatePerception(parseFloat(perceptionInput.value)));
+settingsButton.addEventListener('click', () => inputs.classList.toggle("hide"));
 // stats.showPanel(1);
 const rendering = () => {
 	stats.update();

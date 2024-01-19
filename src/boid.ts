@@ -28,7 +28,7 @@ export default class Boid {
         this._speed = value;
     }
 
-    constructor(scene: THREE.Scene, speed: number = 4, perception: number = 10, multipliers: Multipliers = { cohesion: 1, alignment: 1, separation: 1 }) {
+    constructor(scene: THREE.Scene, speed: number = 4, perception: number = 7.5, multipliers: Multipliers = { cohesion: 1, alignment: 1, separation: 1 }) {
         this._speed = speed;
         this._multipliers = multipliers;
 
